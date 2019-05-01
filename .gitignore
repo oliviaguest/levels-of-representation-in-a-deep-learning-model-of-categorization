@@ -1,3 +1,49 @@
+
+# Stimuli (can't be in repo because they make it super slow to up/download)
+gabor_experiment/stimuli*/*
+cardiogram_experiment/stimuli/*
+*/stimuli/*
+
+# Layer Representations
+gabor_experiment/layer_representations/*/*
+cardiogram_experiment/layer_representations*/*
+*/layer_representations*/*
+
+# Figures
+cardiogram_experiment/exemplar_model_*/figures/*
+cardiogram_experiment/figures/*
+gabor_experiment/figures/*
+tests/figures/*
+*/figures/*
+
+# Results
+cardiogram_experiment/exemplar_model_*/results/*
+cardiogram_experiment/optimum_boundary_models/*
+gabor_experiment/results/*/*
+*/results/*/*
+*/accuracy/*
+
+# But keep the directory structure
+!cardiogram_experiment/exemplar_model_*/figures/.gitkeep
+!cardiogram_experiment/exemplar_model_*/results/.gitkeep
+!cardiogram_experiment/stimuli/Grayscale_Stimuli/.gitkeep
+!cardiogram_experiment/stimuli/Pretraining/.gitkeep
+!cardiogram_experiment/stimuli/Pretraining_grayscale/.gitkeep
+!cardiogram_experiment/stimuli/Set_A/Abnormal/.gitkeep
+!cardiogram_experiment/stimuli/Set_A/Normal/.gitkeep
+!cardiogram_experiment/stimuli/Set_A_grayscale/Abnormal/.gitkeep
+!cardiogram_experiment/stimuli/Set_A_grayscale/Normal/.gitkeep
+!cardiogram_experiment/stimuli/Set_B/Abnormal/.gitkeep
+!cardiogram_experiment/stimuli/Set_B/Normal/.gitkeep
+!cardiogram_experiment/stimuli/Set_B_grayscale/Abnormal/.gitkeep
+!cardiogram_experiment/stimuli/Set_B_grayscale/Normal/.gitkeep
+!cardiogram_experiment/figures/.gitkeep
+!cardiogram_experiment/layer_representations*/.gitkeep
+!gabor_experiment/layer_representations/*/.gitkeep
+!gabor_experiment/stimuli/*/.gitkeep
+!gabor_experiment/figures/*/.gitkeep
+!tests/figures/.gitkeep
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

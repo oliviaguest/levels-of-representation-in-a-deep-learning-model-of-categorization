@@ -30,7 +30,7 @@ class TestGaborExperimentPCA(unittest.TestCase):  # noqa:D101
 
         transformed_x = pca.run_and_plot_pca(subset_paths,
                                              './tests/figures/gabor_experiment'
-                                             '_run_and_plot_pca')
+                                             '_run_and_plot_pca', plot=False)
 
         # Must have the same number of dimensions as inputs:
         self.assertEqual(len(transformed_x), len(subset))

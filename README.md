@@ -1,4 +1,4 @@
-# cnn-vs-pigeons
+# Levels of Representation in a Deep Learning Model of Categorization
 
 [![Build Status](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization.svg?branch=master)](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization)
 

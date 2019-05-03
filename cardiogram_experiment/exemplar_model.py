@@ -1,17 +1,13 @@
 """Run the exemplar models from the CLI."""
-from __future__ import division, print_function
 
-import os
 import argparse
-import warnings
-
+import matplotlib.pylab as plt
 import numpy as np
+import os
 import pandas as pd
 import seaborn as sns
-import matplotlib.pylab as plt
-
+import warnings
 from utils.misc import LAYER_NAMES
-
 from cardiogram_experiment.misc import (EXP_DIR, is_normal, prob_correct,
                                         get_optimum_accuracy_boundary)
 
@@ -22,7 +18,7 @@ sns.set_style('ticks')
 
 def create_and_save_figures(exemplar_model, figures_base_filename, layer_index,
                             layer_name, show=False):
-    """Create and save histogram and scatterplot for each layer."""
+    """Create and save histogram for each layer."""
     # Make the histogram:
     fig, _ = plt.subplots(figsize=(8, 6))
     plt.hist(exemplar_model[exemplar_model['Category'] == 'Abnormal']
@@ -43,46 +39,6 @@ def create_and_save_figures(exemplar_model, figures_base_filename, layer_index,
     if show:
         plt.show()
     plt.close()
-    # Make a scatterplot for amount of damage (for abnormal images) x
-    # probability healthy.
-    # Run OLS with damage on probability healthy:
-    damage_on_prob_healthy =\
-        pd.ols(x=exemplar_model[exemplar_model['Category']
-                                == 'Abnormal']['Amount of Damage'],
-               y=exemplar_model[exemplar_model['Category']
-                                == 'Abnormal']['Probability Healthy'],
-               intercept=True)
-    # Make a fancy OLS plot:
-    p = sns.lmplot(x='Amount of Damage', y='Probability Healthy',
-                   data=exemplar_model[exemplar_model['Category']
-                                       == 'Abnormal'],
-                   fit_reg=True, size=7, aspect=1)
-    # p value for correlation:
-    p_value_string = ', p '
-    if np.around(damage_on_prob_healthy.f_stat['p-value'], 3) == 0.0:
-        p_value_string += ' < 0.001'
-    else:
-        p_value_string += ' = ' + str(np.around(
-            damage_on_prob_healthy.f_stat['p-value'], 3))
-    correlation_string = (r'Correlation: $\rho$ = ' + str(np.around(
-        exemplar_model[exemplar_model['Category'] ==
-                       'Abnormal'][['Amount of Damage',
-                                    'Probability Healthy']].corr()
-        ['Probability Healthy'].iloc[0],
-        3)) + p_value_string)
-    p.fig.tight_layout()
-    p.fig.suptitle('Layer: ' + str(layer_index) + ' ' + layer_name +
-                   ' (abnormal)')
-    p.fig.text(0.05, 0.00, correlation_string, ha='left', fontsize=20)
-    plt.savefig(figures_base_filename +
-                '_scatterplot.png', bbox_inches='tight')
-    plt.savefig(figures_base_filename +
-                '_scatterplot.pdf', bbox_inches='tight')
-    sns.despine(offset=10, trim=True)
-
-    if show:
-        plt.show()
-    plt.close()
 
 
 def run_and_graph_model(model_df, figures_base_filename, layer_index,
@@ -93,10 +49,15 @@ def run_and_graph_model(model_df, figures_base_filename, layer_index,
                              'Ratio of Healthy to Everything':
                              'Probability Healthy'},
                     inplace=True)
+
+    damage = []
+    for l in list(model_df['Image Names']):
+        try:
+            damage.append(int(l.split('_')[1]))
+        except ValueError:
+            damage.append(int(l.split('_')[2]))
     # Add a column for amount of damage:
-    model_df['Amount of Damage'] = [int(l[- 11 - len(postfix) - len('_test'):
-                                          - 9 - len(postfix) - len('_test')])
-                                    for l in list(model_df['Image Names'])]
+    model_df['Amount of Damage'] = damage
 
     print('\tCreating and saving figures for ' + layer_name)
 
@@ -151,11 +112,11 @@ if __name__ == '__main__':
     # This is to handle the passed CLI arguments:
     parser = argparse.ArgumentParser(
         description='Train and test an exemplar model.')
-    parser.add_argument('train', metavar='train', type=unicode,
+    parser.add_argument('train', metavar='train', type=str,
                         help='The name of the stimulus set to train on: '
                         'colour, gray, or grayscale.',
                         choices=['gray', 'grayscale', 'colour'])
-    parser.add_argument('test', metavar='test', type=unicode,
+    parser.add_argument('test', metavar='test', type=str,
                         help='The name of the stimulus set to test on: '
                         'colour, gray, or grayscale.',
                         choices=['gray', 'grayscale', 'colour'])
@@ -229,17 +190,27 @@ if __name__ == '__main__':
             # Not saved, so create!
             # Load the representations for all inputs for a single layer for
             # training:
-            train_filename = (EXP_DIR + TRAIN_DIR + '/' +
-                              layer_name.replace("/", "_") + '.csv')
+            train_filename = (EXP_DIR + TRAIN_DIR + '/'
+                              + layer_name.replace("/", "_") + '.csv')
             print('\tOpening CSV file for training...')
-            train_df = pd.read_csv(train_filename)
+            try:
+                train_df = pd.read_csv(train_filename)
+            except FileNotFoundError:
+                print('You need to run the deep network before this to get the'
+                      ' layer representations for the stimuli!')
+                exit()
             print('\tDone!')
 
             # And for testing:
-            test_filename = (EXP_DIR + TEST_DIR + '/' +
-                             layer_name.replace("/", "_") + '.csv')
+            test_filename = (EXP_DIR + TEST_DIR + '/'
+                             + layer_name.replace("/", "_") + '.csv')
             print('\tOpening CSV file for testing...')
-            test_df = pd.read_csv(test_filename)
+            try:
+                test_df = pd.read_csv(test_filename)
+            except FileNotFoundError:
+                print('You need to run the deep network before this to get the'
+                      ' layer representations for the stimuli!')
+                exit()
             print('\tDone!')
 
             # There is a list of numbers representing the index to the
@@ -247,11 +218,11 @@ if __name__ == '__main__':
             # Useless to us, so drop:
             try:
                 train_df = train_df.drop('Unnamed: 0', 1)
-            except ValueError:
+            except KeyError:
                 pass
             try:
                 test_df = test_df.drop('Unnamed: 0', 1)
-            except ValueError:
+            except KeyError:
                 pass
 
             # For test set:
@@ -338,8 +309,8 @@ if __name__ == '__main__':
                         test_abnormal_column_names))].sum()
             # 2.b. But not to itself!
             hold_one_out_abnormal_to_abnormal -= diagonal[len(
-                test_healthy_column_names):(len(test_healthy_column_names)
-                                            + len(test_abnormal_column_names))]
+                test_healthy_column_names):(len(test_healthy_column_names) +
+                                            len(test_abnormal_column_names))]
             # 2.c. Correct sum for missing item (self):
             hold_one_out_abnormal_to_abnormal *= \
                 len(test_abnormal_column_names) / \
@@ -354,8 +325,8 @@ if __name__ == '__main__':
                 test_healthy_column_names)]
             # 3.c. Correct sum for missing item (self):
             hold_one_out_healthy_to_healthy *= len(
-                test_healthy_column_names) / (len(test_healthy_column_names)
-                                              - 1)
+                test_healthy_column_names) / (len(test_healthy_column_names) -
+                                              1)
             # 4. How similar each healthy item is to each abnormal item.
             hold_one_out_healthy_to_abnormal = \
                 similarity[test_healthy_column_names].iloc[len(

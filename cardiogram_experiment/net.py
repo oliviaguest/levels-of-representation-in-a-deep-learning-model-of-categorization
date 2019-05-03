@@ -86,10 +86,10 @@ def run_on_images_and_save_as_dfs(images, suffix):
         layer_df = pd.DataFrame(rep_dict)
         # print(layer_df.head())
         try:
-            os.makedirs(EXP_DIR + 'layer_representations' + suffix)
+            os.makedirs(EXP_DIR + 'layer_representations_' + suffix)
         except OSError:
             pass
-        layer_df.to_csv(EXP_DIR + 'layer_representations' + suffix + '/' +
+        layer_df.to_csv(EXP_DIR + 'layer_representations_' + suffix + '/' +
                         LAYER_NAMES[l].replace("/", "_") + '.csv', index=False)
 
 
@@ -102,13 +102,16 @@ def main(_):
         images = []
         images_per_directory = [0 for d in directories]
 
-        for p, path in enumerate(paths):
-            for i, image in enumerate(os.listdir(path)):
-                if os.path.splitext(os.path.join(path,
-                                                 image))[-1].lower() == '.jpg':
-                    images.append(os.path.join(path, image))
-                    images_per_directory[p] += 1
-
+        try:
+            for p, path in enumerate(paths):
+                for i, image in enumerate(os.listdir(path)):
+                    if os.path.splitext(
+                            os.path.join(path, image))[-1].lower() == '.jpg':
+                        images.append(os.path.join(path, image))
+                        images_per_directory[p] += 1
+        except FileNotFoundError:
+            print('You need to download the stimuli!')
+            exit()
         run_on_images_and_save_as_dfs(images, suffix)
 
 

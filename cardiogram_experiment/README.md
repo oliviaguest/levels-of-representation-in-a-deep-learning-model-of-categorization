@@ -25,6 +25,3 @@ Uses the outputs from ```exemplar_model.py``` (assuming all appropriate combinat
 
 ### ```graph_layer_0.py```
 Uses the outputs from ```exemplar_model.py``` (assuming all appropriate combinations of train and test have been run and saved) and creates figures comparing the three models specifically at layer 0 (the pixel space).
-
-### ```create_grayscale_images.py```
-One off script to take the colourised images and turn them into grayscale. This is how I create the ```grayscale``` stimuli.  Needs updating because directory structure has changed. Currently not in use anyway.

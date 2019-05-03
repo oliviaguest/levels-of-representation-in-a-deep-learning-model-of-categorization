@@ -13,7 +13,7 @@ FIGURES_DIR = EXP_DIR + 'figures/'
 # Where the stimuli/images are stored:
 IMAGES_DIR = './cardiogram_experiment/stimuli/'
 
-SUFFIXES = ['colo', 'gray', 'grayscale']
+SUFFIXES = ['colour', 'gray', 'grayscale']
 
 
 def get_stimuli_directories(g='color'):

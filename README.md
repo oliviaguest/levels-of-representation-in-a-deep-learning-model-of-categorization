@@ -13,20 +13,20 @@ For more information, see ```README.md``` in directory ```cardiogram_experiment`
 ## 2D Shapes Experiment (Circles and Squares)
 Run scripts from this directory, e.g.:
 ```
-python shapes_experiment/exemplar_model_circle_square_bounding_box.py.
+python shapes_experiment/exemplar_model_circle_square_bounding_box.py
 ```
 For more information, see ```README.md``` in directory ```shapes_experiment```.
 
 ## Shape Bias (CogDev Stimuli) Experiment
 Run scripts from this directory, e.g.:
 ```
-python cog_dev_experiment/exemplar_model.py.
+python cog_dev_experiment/exemplar_model.py
 ```
 For more information, see ```README.md``` in directory ```cog_dev_experiment```.
 
 ## Gabor Patches Experiment
 Run scripts from this directory, e.g.:
 ```
-python gabor_experiment/pca.py.
+python gabor_experiment/pca.py
 ```
 For more information, see ```README.md``` in directory ```gabor_experiment```.

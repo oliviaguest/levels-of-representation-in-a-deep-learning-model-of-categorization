@@ -9,10 +9,10 @@ import matplotlib.pylab as plt
 
 from utils.misc import LAYER_NAMES
 
+EXP_DIR = './cog_dev_experiment/'
 
 
 def create_and_save_figures():
-    EXP_DIR = './cog_dev_experiment/'
     sns.set()
     sns.set(style="whitegrid")
     sns.set(font_scale=1.6, style="ticks")

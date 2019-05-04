@@ -108,6 +108,9 @@ def main(_):
     for root, _, filenames in os.walk(EXP_DIR + 'stimuli/'):
         for filename in fnmatch.filter(filenames, '*.jpg'):
             images.append(os.path.join(root, filename))
+    if images == []:
+        print('You need to download the stimuli!')
+        exit()
     run_on_images_and_save_as_dfs(images)
 
 

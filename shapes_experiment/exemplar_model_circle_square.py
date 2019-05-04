@@ -155,8 +155,12 @@ if __name__ == '__main__':
             # Load the representations for all inputs for a single layer:
             layer_filename = EXP_DIR + 'layer_representations/' + \
                 stim_dir + layer_name.replace("/", "_") + '.csv'
-            df = pd.read_csv(layer_filename)
-
+            try:
+                df = pd.read_csv(layer_filename)
+            except FileNotFoundError:
+                print('You need to run the deep network before this to get the'
+                      ' layer representations for the stimuli!')
+                exit()
             # Create all category combinations:
             prototypes_a, categories_a, prototypes_b, categories_b = \
                 create_all_categories(list(df.columns))
@@ -252,9 +256,9 @@ if __name__ == '__main__':
                 max_accuracy.append(
                     np.sum(exemplar_model['Max Correct']) /
                     exemplar_model['Max Correct'].count())
-                print(prototype_a)
+                # print(prototype_a)
                 exemplar_model = get_optimum_correct(exemplar_model, items_a, items_b)
-                print(exemplar_model)
+                # print(exemplar_model)
 
                 # print('Luce choice accuracy at', layer_name,
                 #       ':', accuracy[layer_index],)
@@ -320,25 +324,24 @@ if __name__ == '__main__':
                                                                          ' Correct']]
                                                   .mean())
 
-            accuracy_df.set_value(layer_name, 'Luce Accuracy', np.mean(
-                accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Max Accuracy', np.mean(max_accuracy[layer_index * (
-                len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Optimum Accuracy', np.mean(
-                optimum_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Hue Luce Accuracy', np.mean(
-                same_hue_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Size Luce Accuracy', np.mean(
-                same_size_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Shape Luce Accuracy', np.mean(
-                same_shape_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Hue Optimum Accuracy', np.mean(
-                optimum_same_hue_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Size Optimum Accuracy', np.mean(
-                optimum_same_shape_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            accuracy_df.set_value(layer_name, 'Same Shape Optimum Accuracy', np.mean(
-                optimum_same_size_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))]))
-            print(accuracy_df)
+            accuracy_df.at[layer_name, 'Luce Accuracy'] = np.mean(
+                accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Max Accuracy'] = np.mean(max_accuracy[layer_index * (
+                len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Optimum Accuracy'] = np.mean(
+                optimum_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Hue Luce Accuracy'] = np.mean(
+                same_hue_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Size Luce Accuracy'] = np.mean(
+                same_size_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Shape Luce Accuracy'] = np.mean(
+                same_shape_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Hue Optimum Accuracy'] =  np.mean(
+                optimum_same_hue_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Size Optimum Accuracy'] =  np.mean(
+                optimum_same_shape_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
+            accuracy_df.at[layer_name, 'Same Shape Optimum Accuracy'] =  np.mean(
+                optimum_same_size_accuracy[layer_index * (len(categories_a[0])):(layer_index + 1) * (len(categories_a[0]))])
 
 
         accuracy = np.asarray(accuracy) \

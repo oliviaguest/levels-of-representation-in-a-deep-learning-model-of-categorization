@@ -171,7 +171,7 @@ if __name__ == '__main__':
                                    index=LAYER_NAMES)
         accuracy_df['Stimulus Type'] = stim_type
         accuracy_df['Hue Type'] = hue
-        print(hue, stim_type)
+        # print(hue, stim_type)
 
         results_dir = EXP_DIR + '/results/' + stim_dir
         figures_dir = EXP_DIR + '/figures/' + stim_dir
@@ -193,11 +193,11 @@ if __name__ == '__main__':
                 '_' + layer_name.replace("/", "_")
 
             # Load the representations for all inputs for a single layer:
-            layer_filename = (EXP_DIR + 'layer_representations/'
-                              + stim_dir + layer_name.replace("/", "_")
-                              + '.csv')
+            layer_filename = (EXP_DIR + 'layer_representations/' +
+                              stim_dir + layer_name.replace("/", "_") +
+                              '.csv')
             print('\tOpening CSV file with layer representations...')
-            print(layer_filename)
+            # print(layer_filename)
             try:
                 df = pd.read_csv(layer_filename)
             except FileNotFoundError:
@@ -248,18 +248,18 @@ if __name__ == '__main__':
                 similarity_to_B_prototype = A_items_to_B_prototype.append(
                     B_items_to_B_prototype)
                 similarity_to_both = \
-                    pd.DataFrame(similarity_to_A_prototype[prototype_a] +
-                                 similarity_to_B_prototype[prototype_b])
+                    pd.DataFrame(similarity_to_A_prototype[prototype_a]
+                                 + similarity_to_B_prototype[prototype_b])
 
                 # Probability that an item is in A
                 prob_A = pd.DataFrame(
-                    similarity_to_A_prototype[prototype_a]
-                    / similarity_to_both[0], columns=['Probability A'])
+                    similarity_to_A_prototype[prototype_a] /
+                    similarity_to_both[0], columns=['Probability A'])
 
                 # Probability that an item is in B
                 prob_B = pd.DataFrame(
-                    similarity_to_B_prototype[prototype_b]
-                    / similarity_to_both[0], columns=['Probability B'])
+                    similarity_to_B_prototype[prototype_b] /
+                    similarity_to_both[0], columns=['Probability B'])
 
                 exemplar_model = pd.concat(
                     [prob_A, prob_B], axis=1, join='inner')
@@ -305,13 +305,13 @@ if __name__ == '__main__':
                 exemplar_model.loc[items_b, 'Max Correct'] = \
                     exemplar_model['Probability B'].loc[items_b] > \
                     exemplar_model['Probability A'].loc[items_b]
-                max_accuracy.append(np.sum(exemplar_model['Max Correct'])
-                                    / exemplar_model['Max Correct'].count())
+                max_accuracy.append(np.sum(exemplar_model['Max Correct']) /
+                                    exemplar_model['Max Correct'].count())
 
-                print(prototype_a)
+                # print(prototype_a)
                 exemplar_model = get_optimum_correct(
                     exemplar_model, items_a, items_b)
-                print(exemplar_model)
+                # print(exemplar_model)
 
                 create_and_save_figures(exemplar_model, figures_base_filename,
                                         layer_index, layer_name, show=False)
@@ -322,42 +322,42 @@ if __name__ == '__main__':
                 exemplar_model = pd.concat([exemplar_model, dim_df], axis=1,
                                            join='inner')
 
-                hue_accuracy.append(exemplar_model[exemplar_model['Hue'] !=
-                                                   exemplar_model[
+                hue_accuracy.append(exemplar_model[exemplar_model['Hue']
+                                                   != exemplar_model[
                                                        'Prototype Hue']]
                                     [['Probability Correct']].mean())
-                print(exemplar_model['Hue'])
-                print(exemplar_model['Prototype Hue'])
+                # print(exemplar_model['Hue'])
+                # print(exemplar_model['Prototype Hue'])
 
-                shape_accuracy.append(exemplar_model[exemplar_model['Shape'] !=
-                                                     exemplar_model
+                shape_accuracy.append(exemplar_model[exemplar_model['Shape']
+                                                     != exemplar_model
                                                      ['Prototype Shape']][[
                                                          'Probability'
                                                          ' Correct']].mean())
 
-                size_accuracy.append(exemplar_model[exemplar_model['Size'] !=
-                                                    exemplar_model
+                size_accuracy.append(exemplar_model[exemplar_model['Size']
+                                                    != exemplar_model
                                                     ['Prototype Size']][[
                                                         'Probability'
                                                         ' Correct']].mean())
 
                 same_hue_accuracy.append(exemplar_model[exemplar_model
-                                                        ['Hue'] ==
-                                                        exemplar_model
+                                                        ['Hue']
+                                                        == exemplar_model
                                                         ['Prototype Hue']]
                                          [['Probability'
                                            ' Correct']].mean())
 
                 same_shape_accuracy.append(exemplar_model[exemplar_model
-                                                          ['Shape'] ==
-                                                          exemplar_model
+                                                          ['Shape']
+                                                          == exemplar_model
                                                           ['Prototype'
                                                            ' Shape']]
                                            [['Probability Correct']].mean())
 
                 same_size_accuracy.append(exemplar_model[exemplar_model
-                                                         ['Size'] ==
-                                                         exemplar_model
+                                                         ['Size']
+                                                         == exemplar_model
                                                          ['Prototype'
                                                           ' Size']][[
                                                               'Probability'
@@ -365,59 +365,59 @@ if __name__ == '__main__':
                                           .mean())
 
                 optimum_accuracy.append(np.sum(
-                    exemplar_model['Optimum Correct']) /
-                    exemplar_model['Optimum Correct'].count())
+                    exemplar_model['Optimum Correct'])
+                    / exemplar_model['Optimum Correct'].count())
 
                 optimum_same_hue_accuracy.append(
                     exemplar_model[exemplar_model
-                                   ['Hue'] ==
-                                   exemplar_model
+                                   ['Hue']
+                                   == exemplar_model
                                    ['Prototype Hue']]
                     [['Optimum'
                       ' Correct']].mean())
 
                 optimum_same_shape_accuracy.append(
                     exemplar_model[exemplar_model
-                                   ['Shape'] ==
-                                   exemplar_model
+                                   ['Shape']
+                                   == exemplar_model
                                    ['Prototype'
                                        ' Shape']]
                     [['Optimum Correct']].mean())
 
                 optimum_same_size_accuracy.append(
                     exemplar_model[exemplar_model
-                                   ['Size'] ==
-                                   exemplar_model
+                                   ['Size']
+                                   == exemplar_model
                                    ['Prototype'
                                        ' Size']][[
                                            'Optimum'
                                            ' Correct']]
                     .mean())
             layer_slice = slice(layer_index * (len(items_a) + len(items_b)),
-                                (layer_index + 1) * (len(items_a) +
-                                                     len(items_b)))
-            accuracy_df.set_value(layer_name, 'Luce Accuracy', np.mean(
-                accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Max Accuracy', np.mean(
-                max_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Optimum Accuracy', np.mean(
-                optimum_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Hue Luce Accuracy',
-                                  np.mean(same_hue_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Size Luce Accuracy',
-                                  np.mean(same_size_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Shape Luce Accuracy',
-                                  np.mean(same_shape_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Hue Optimum Accuracy',
-                                  np.mean(
-                                      optimum_same_hue_accuracy[layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Size Optimum Accuracy',
-                                  np.mean(
-                                      optimum_same_shape_accuracy[
-                                          layer_slice]))
-            accuracy_df.set_value(layer_name, 'Same Shape Optimum Accuracy',
-                                  np.mean(
-                                      optimum_same_size_accuracy[layer_slice]))
+                                (layer_index + 1) * (len(items_a)
+                                                     + len(items_b)))
+            accuracy_df.at[layer_name, 'Luce Accuracy'] = np.mean(
+                accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Max Accuracy'] = np.mean(
+                max_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Optimum Accuracy'] = np.mean(
+                optimum_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Same Hue Luce Accuracy'] =\
+                np.mean(same_hue_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Same Size Luce Accuracy'] =\
+                np.mean(same_size_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Same Shape Luce Accuracy'] =\
+                np.mean(same_shape_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Same Hue Optimum Accuracy'] =\
+                np.mean(
+                optimum_same_hue_accuracy[layer_slice])
+            accuracy_df.at[layer_name, 'Same Size Optimum Accuracy'] =\
+                np.mean(
+                optimum_same_shape_accuracy[
+                    layer_slice])
+            accuracy_df.at[layer_name, 'Same Shape Optimum Accuracy'] =\
+                np.mean(
+                optimum_same_size_accuracy[layer_slice])
         layer_shape = (len(LAYER_NAMES), len(items_a) + len(items_b))
         accuracy = np.asarray(accuracy).reshape(layer_shape).mean(axis=1)
         max_accuracy = np.asarray(max_accuracy).\
@@ -435,21 +435,21 @@ if __name__ == '__main__':
         same_shape_accuracy = np.asarray(same_shape_accuracy).\
             reshape(layer_shape).mean(axis=1)
 
-        accuracy_df.to_csv(ACCURACY_DIR + stim_dir.replace("/", "_")
-                           + 'accuracy.csv')
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'luce.csv', accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'max.csv', max_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'hue_luce.csv', hue_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'shape_luce.csv', shape_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'size_luce.csv', size_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'same_hue_luce.csv', same_hue_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'same_shape_luce.csv', same_shape_accuracy)
-        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_")
-                   + 'same_size_luce.csv', same_size_accuracy)
+        accuracy_df.to_csv(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                           'accuracy.csv')
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'luce.csv', accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'max.csv', max_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'hue_luce.csv', hue_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'shape_luce.csv', shape_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'size_luce.csv', size_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'same_hue_luce.csv', same_hue_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'same_shape_luce.csv', same_shape_accuracy)
+        np.savetxt(ACCURACY_DIR + stim_dir.replace("/", "_") +
+                   'same_size_luce.csv', same_size_accuracy)

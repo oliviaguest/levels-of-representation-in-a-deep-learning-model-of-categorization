@@ -25,7 +25,7 @@ TRAIN_TYPES = ['colour', 'colour', 'grayscale']
 TEST_TYPES = ['colour', 'grayscale', 'grayscale']
 LAYER_INDEX = 0
 optimum_boundary_models_file = (EXP_DIR
-                                + './optimum_boundary_models/all_models.csv')
+                                + 'optimum_boundary_models/all_models.csv')
 # sns.set(style="whitegrid")
 # sns.set(font_scale=1.2, style="ticks")
 

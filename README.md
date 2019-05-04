@@ -2,6 +2,13 @@
 
 [![Build Status](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization.svg?branch=master)](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization)
 
+# Preprint
+[Levels of Representation in a Deep Learning Model of Categorization](https://www.biorxiv.org/content/10.1101/626374v1)
+
+[Olivia Guest](//oliviaguest.com), [Bradley C. Love](//bradlove.org)
+
+bioRxiv 626374; doi: https://doi.org/10.1101/626374
+
 # Experiments
 ## Cardiogram Images Experiment
 Run scripts from this directory, e.g.:

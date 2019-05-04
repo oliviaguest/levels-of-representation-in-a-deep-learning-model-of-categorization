@@ -8,7 +8,7 @@
 bioRxiv 626374; doi: https://doi.org/10.1101/626374
 
 # Data
-Please download all data and merge into the same dicrectory structure from the OSF repo: [https://osf.io/jxavn/](https://osf.io/jxavn/).
+Please download all data and merge into the same directory structure from the OSF repo: [https://osf.io/jxavn/](https://osf.io/jxavn/).
 
 # Experiments
 ## Cardiogram Images Experiment

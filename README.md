@@ -1,13 +1,14 @@
 # Levels of Representation in a Deep Learning Model of Categorization
 
-[![Build Status](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization.svg?branch=master)](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization)
+[![Build Status](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization.svg?branch=master)](https://travis-ci.org/oliviaguest/levels-of-representation-in-a-deep-learning-model-of-categorization) ![Twitter Follow](https://img.shields.io/twitter/follow/o_guest.svg?style=social)
 
 # Preprint
 [Levels of Representation in a Deep Learning Model of Categorization](https://www.biorxiv.org/content/10.1101/626374v1)
-
 [Olivia Guest](//oliviaguest.com), [Bradley C. Love](//bradlove.org)
-
 bioRxiv 626374; doi: https://doi.org/10.1101/626374
+
+# Data
+Please download all data and merge into the same dicrectory structure from the OSF repo: [https://osf.io/jxavn/](https://osf.io/jxavn/).
 
 # Experiments
 ## Cardiogram Images Experiment

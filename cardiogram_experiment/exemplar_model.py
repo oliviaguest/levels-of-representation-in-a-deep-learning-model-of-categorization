@@ -58,7 +58,8 @@ def run_and_graph_model(model_df, figures_base_filename, layer_index,
             damage.append(int(l.split('_')[2]))
     # Add a column for amount of damage:
     model_df['Amount of Damage'] = damage
-
+    print(model_df)
+    exit()
     print('\tCreating and saving figures for ' + layer_name)
 
     create_and_save_figures(model_df, figures_base_filename, layer_index,

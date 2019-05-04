@@ -97,7 +97,8 @@ def main(_):
     """Main function that calls all others."""
     maybe_download_and_extract()
     for suffix in SUFFIXES:
-        directories = get_stimuli_directories(g='gray')
+        directories = get_stimuli_directories(g=suffix)
+
         paths = [IMAGES_DIR + d for d in directories]
         images = []
         images_per_directory = [0 for d in directories]

@@ -102,19 +102,21 @@ def run_on_images_and_save_as_dfs(images, stim_dir):
 def main(_):
     """Main function that calls all others."""
     maybe_download_and_extract()
-    for images_sub_dir in IMAGES_SUB_DIRS:
-        for images_sub_sub_dir in IMAGES_SUB_SUB_DIRS:
-            path = IMAGES_DIR + images_sub_dir + images_sub_sub_dir
-            stim_dir = images_sub_dir + images_sub_sub_dir
-            images = []
+    try:
+        for images_sub_dir in IMAGES_SUB_DIRS:
+            for images_sub_sub_dir in IMAGES_SUB_SUB_DIRS:
+                path = IMAGES_DIR + images_sub_dir + images_sub_sub_dir
+                stim_dir = images_sub_dir + images_sub_sub_dir
+                images = []
 
-            for image in os.listdir(path):
-                if os.path.splitext(os.path.join(path,
-                                                 image))[-1].lower() == '.jpg':
-                    images.append(os.path.join(path, image))
-            # print(images, stim_dir)
-            run_on_images_and_save_as_dfs(images, stim_dir)
-
+                for image in os.listdir(path):
+                    if os.path.splitext(os.path.join(path,
+                                                     image))[-1].lower() == '.jpg':
+                        images.append(os.path.join(path, image))
+                # print(images, stim_dir)
+                run_on_images_and_save_as_dfs(images, stim_dir)
+    except FileNotFoundError:
+        print('You need to download the stimuli!')
 
 if __name__ == '__main__':
     tf.app.run()

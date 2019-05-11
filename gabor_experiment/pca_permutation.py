@@ -41,7 +41,7 @@ sns.set(font_scale=1.05, style="ticks")
 sns.set_palette("Set1", 6, .75)
 
 
-def run_and_plot_pca(representations_path, save_filename):
+def run_and_plot_pca(representations_path, save_filename, plot=True):
     """Run and plot PCA and return transformed representations."""
     # Keep track of the representations:
     representations = []
@@ -125,7 +125,7 @@ def run_pca_and_permutation_test():
 
             for l, layer_name in enumerate(LAYER_NAMES):
                 save_filename = figs_dir + 'pca_layer_' + str(l)
-                print('Running PCA on layer: ' + l + layer_name)
+                print('Running PCA on layer: ' + str(l) + ' ' + layer_name)
                 # Run PCA, save plot of variance explained per component, and
                 # return transformed representations:
                 transformed_x = run_and_plot_pca(subset_paths[l],
@@ -203,7 +203,7 @@ def run_pca_and_permutation_test():
                                                   df['Permuted Image']]
 
                     # Now we set up the dataframe for the permutations:
-                    columns = {
+                    data = {
                         'Correlation between Permuted Frequency and 1st PC':
                         [df['Permuted Frequency'].corr(
                             df['1st PC Layer ' + str(l)])],
@@ -235,10 +235,10 @@ def run_pca_and_permutation_test():
                     }
                     try:
                         permutation_df = permutation_df.append(
-                            pd.DataFrame(columns, index=[permutation]))
+                            pd.DataFrame(data, index=[permutation]))
                     except NameError:
                         permutation_df = pd.DataFrame(
-                            columns, index=[permutation])
+                            data, index=[permutation])
 
                 # As before select the max Frequency and Orientation:
                 permutation_df['Permuted Frequency'] = \
@@ -251,10 +251,7 @@ def run_pca_and_permutation_test():
                 del permutation_df
 
         for l, layer_name in enumerate(LAYER_NAMES):
-            try:
-                del permutation_df
-            except NameError:
-                None
+
             permutations_filename = (RESULTS_DIR + '/permutations_pca/' +
                                      'permuted_correlations' +
                                      stimuli_postfix + '_layer_' + str(l) +
@@ -278,6 +275,8 @@ def run_pca_and_permutation_test():
             # plt.show()
             plt.close()
 
+        print(permutation_df)
+        exit()
         # Now we want to calculate the permuted p-values for the two values we
         # picked for Frequency and Orientation.
         for column in ['Frequency', 'Orientation']:

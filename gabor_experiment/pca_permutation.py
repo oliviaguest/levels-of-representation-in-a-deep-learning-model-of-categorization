@@ -53,18 +53,19 @@ def run_and_plot_pca(representations_path, save_filename, plot=True):
     transformed_representations = pca.fit_transform(np.array(representations))
     variance_explained = pca.explained_variance_ratio_
     # Figure:
-    fig = plt.figure()  # noqa
-    plt.plot(variance_explained, '.-')
-    sns.despine(fig)
-    plt.ylabel('Variance Explained')
-    plt.xlabel('Number of Components')
-    plt.ylim([-0.01, 0.4])
-    plt.xlim([-1, 82])
-    fig.savefig(save_filename + '.pdf',
-                bbox_inches='tight', pad_inches=0.05)
-    fig.savefig(save_filename + '.png',
-                bbox_inches='tight', pad_inches=0.05)
-    plt.close(fig)
+    if plot:
+        fig = plt.figure()  # noqa
+        plt.plot(variance_explained, '.-')
+        sns.despine(fig)
+        plt.ylabel('Variance Explained')
+        plt.xlabel('Number of Components')
+        plt.ylim([-0.01, 0.4])
+        plt.xlim([-1, 82])
+        fig.savefig(save_filename + '.pdf',
+                    bbox_inches='tight', pad_inches=0.05)
+        fig.savefig(save_filename + '.png',
+                    bbox_inches='tight', pad_inches=0.05)
+        plt.close(fig)
     return transformed_representations
 
 
@@ -275,7 +276,11 @@ def run_pca_and_permutation_test():
             # plt.show()
             plt.close()
 
-        print(permutation_df)
+
+        for column in permutation_df.columns:
+            print(column)
+
+        # print(permutation_df[['']])
         exit()
         # Now we want to calculate the permuted p-values for the two values we
         # picked for Frequency and Orientation.

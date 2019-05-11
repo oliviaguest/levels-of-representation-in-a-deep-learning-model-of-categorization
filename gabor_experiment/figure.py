@@ -16,8 +16,6 @@ import matplotlib.pyplot as plt
 from utils.misc import LAYER_NAMES
 
 
-
-
 def create_and_save_figures(just_original=True):
     """Create and save figures."""
     sns.set()
@@ -31,9 +29,15 @@ def create_and_save_figures(just_original=True):
         results_filename = RESULTS_DIR + 'pca' + stimuli_postfix + '.csv'
         correlations_results_filename = RESULTS_DIR + \
             'correlations_pca' + stimuli_postfix + '.csv'
-        df = pd.read_csv(correlations_results_filename)
 
-        df.to_csv(correlations_results_filename)
+        try:
+            df = pd.read_csv(correlations_results_filename)
+        except FileNotFoundError:
+            print('Please run pca_permutations.py to have all files required'
+                  'to create the figures.')
+            continue
+
+        # df.to_csv(correlations_results_filename)
 
         sns.set_palette(sns.color_palette('muted'))
         colors = ["bright sky blue", "purple"]
@@ -62,14 +66,21 @@ def create_and_save_figures(just_original=True):
                 del permutation_df
             except NameError:
                 None
-            permutations_filename = (RESULTS_DIR + '/permutations_pca/' +
-                                     'permuted_correlations' +
-                                     stimuli_postfix + '_layer_' + str(l)
+            permutations_filename = (RESULTS_DIR + 'permutations_pca/'
+                                     + 'permuted_correlations'
+                                     + stimuli_postfix + '_layer_' + str(l)
                                      + '.csv')
 
     #         print(permutations_filename)
-            permutation_df = pd.read_csv(
-                permutations_filename, index_col=0)
+
+            try:
+                permutation_df = pd.read_csv(permutations_filename,
+                                             index_col=0)
+            except FileNotFoundError:
+                print('File missing:', permutations_filename)
+                print('Please run pca_permutations.py to have all files'
+                      ' required to create the figures.')
+                continue
 
             mean_permuted_frequency.append(
                 permutation_df['Permuted Frequency'].mean())
@@ -100,7 +111,6 @@ def create_and_save_figures(just_original=True):
 
         ax.tick_params(axis='both', which='both', top='off', right='off')
 
-
         fig.savefig(general_figs_dir + '_correlation.pdf', bbox_inches='tight')
         fig.savefig(general_figs_dir + '_correlation.png', bbox_inches='tight')
         # if 'original' in figs_dir:
@@ -113,4 +123,4 @@ def create_and_save_figures(just_original=True):
 
 
 if __name__ == '__main__':
-    create_and_save_figures(just_original=True)
+    create_and_save_figures(just_original=False)

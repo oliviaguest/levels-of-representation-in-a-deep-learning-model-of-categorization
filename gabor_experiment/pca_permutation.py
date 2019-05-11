@@ -325,4 +325,4 @@ def run_pca_and_permutation_test():
 
 
 if __name__ == '__main__':
-    create_and_save_figures()
+    run_pca_and_permutation_test()

@@ -67,7 +67,7 @@ def get_representations(stimuli, reps_dir):
 def max_correlation(row, column_name):
     max_value = row[['Correlation between ' + column_name + ' and 1st PC',
                      'Correlation between ' + column_name + ' and 2nd PC']]\
-        .abs().argmax()
+        .abs().idxmax()
     return row[['Correlation between ' + column_name + ' and 1st PC',
                 'Correlation between ' + column_name + ' and 2nd PC']]\
         .abs().max()

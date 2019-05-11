@@ -6,7 +6,7 @@ from gabor_experiment.misc import ORIGINAL_REPS_DIR
 from gabor_experiment.misc import ORIGINAL_STIMULI_DIR
 from gabor_experiment.misc import RIGHT_STIMULI_DIR
 from gabor_experiment.misc import STIMULI_POSTFIXES
-import gabor_experiment.pca as pca
+import gabor_experiment.pca_permutation as pca
 import os
 import unittest
 from utils.misc import LAYER_NAMES
@@ -30,7 +30,7 @@ class TestGaborExperimentPCA(unittest.TestCase):  # noqa:D101
 
         transformed_x = pca.run_and_plot_pca(subset_paths,
                                              './tests/figures/gabor_experiment'
-                                             '_run_and_plot_pca', plot=False)
+                                             '_run_and_plot_pca')
 
         # Must have the same number of dimensions as inputs:
         self.assertEqual(len(transformed_x), len(subset))

@@ -153,7 +153,7 @@ def create_and_save_figures():
     # Create another figure to visualise these correlations:
     plot_df = pd.DataFrame(df.mean())  # noqa
     plot_df.columns = ['Mean Rank']
-    # print(plot_df)
+
     plot_df['Layer'] = plot_df.index
     plot_df['Layer'] = plot_df['Layer'].astype('int64')
 

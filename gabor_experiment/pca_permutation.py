@@ -1,4 +1,4 @@
-"""Do the bulk of the following items.
+"""Do the following:
 
 (1) get an N (each item) x number of units matrix.
 (2) Do a PCA.

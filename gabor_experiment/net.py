@@ -108,7 +108,6 @@ def main(_):
             os.makedirs(reps_dir)
         except OSError:
             pass
-
         run_on_images_and_save_as_dfs(subset, reps_dir)
 
 

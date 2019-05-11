@@ -36,6 +36,10 @@ def get_subset(stimuli_dir, basename=False):
     # Grab all the stimuli names:
     stimuli = glob.glob(stimuli_dir + '*.jpg')
     stimuli.sort()
+
+    if len(stimuli) == 2:
+        print('You need to download the stimuli!')
+        exit()
     # We are only using a subset of stimuli (a hundredth):
     subset = []
     for stimulus in stimuli:

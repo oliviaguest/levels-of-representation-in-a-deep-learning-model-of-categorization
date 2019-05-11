@@ -18,11 +18,9 @@ def create_and_save_figures():
     sns.set(font_scale=1.6, style="ticks")
     # Attempt to load the saved accuracies in order to graph them:
     try:
-        luce_accuracy = np.loadtxt(EXP_DIR + 'luce_accuracy.csv')  # noqa
         max_accuracy = np.loadtxt(EXP_DIR + 'max_accuracy.csv')  # noqa
     # But if the files don't exist obviously we have to create and save them:
     except IOError:
-        luce_accuracy = []  # noqa
         max_accuracy = []  # noqa
         for layer_index, layer_name in enumerate(LAYER_NAMES):
             # Load the representations for all inputs for a single layer:
@@ -30,7 +28,12 @@ def create_and_save_figures():
             layer_filename = EXP_DIR + 'layer_representations/' + \
                 layer_name.replace("/", "_") + '.csv'
             print('\tOpening CSV file with layer representations...')
-            df = pd.read_csv(layer_filename)
+            try:
+                df = pd.read_csv(layer_filename)
+            except FileNotFoundError:
+                print('You need to run the deep network before this to get the'
+                      ' layer representations for the stimuli!')
+                exit()
             print('\tDone!')
             # The names of the stimuli are the columns:
             stimuli = list(df.columns)
@@ -63,7 +66,6 @@ def create_and_save_figures():
             # Rename the columns to reflect the roles of each stimulus and the
             # triplet they belong to:
             df.columns = stimuli
-            layer_luce_accuracy = []
             layer_max_accuracy = []
             # For each triplet:
             for triplet in triplets:
@@ -76,17 +78,13 @@ def create_and_save_figures():
                 similarity = pd.DataFrame(similarity.iloc[0])
                 sim_to_shape = float(similarity.iloc[0])
                 sim_to_colour = float(similarity.iloc[1])
-                # Luce choice accuracy:
-                layer_luce_accuracy.append(
-                    sim_to_shape / (sim_to_colour + sim_to_shape))
+
                 if sim_to_shape > sim_to_colour:
                     layer_max_accuracy.append(1)
                 else:
                     layer_max_accuracy.append(0)
 
-            luce_accuracy.append(np.asarray(layer_luce_accuracy).mean())
             max_accuracy.append(np.asarray(layer_max_accuracy).mean())
-        np.savetxt(EXP_DIR + 'luce_accuracy.csv', luce_accuracy)
         np.savetxt(EXP_DIR + 'max_accuracy.csv', max_accuracy)
 
     fig, ax = plt.subplots()

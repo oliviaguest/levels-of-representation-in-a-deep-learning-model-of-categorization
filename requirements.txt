@@ -80,4 +80,4 @@ six == 1.10.0
 # gabor_experiment/net.py: 45
 # shapes_experiment/net.py: 45
 # utils/iv3.py: 49
-tensorflow == 0.11.0
+tensorflow >= 0.11.0

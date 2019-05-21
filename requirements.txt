@@ -33,7 +33,7 @@ matplotlib == 1.5.1
 # tests/test_cardiogram_experiment.py: 3
 # utils/iv3.py: 48
 # utils/misc.py: 1
-numpy == 1.11.0
+numpy >= 1.13.3
 
 # cardiogram_experiment/exemplar_model.py: 7
 # cardiogram_experiment/net.py: 46

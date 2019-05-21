@@ -83,7 +83,6 @@ def run_pca_and_permutation_test():
                                          stimuli_postfix + '.csv')
 
         try:
-            print(results_filename)
 
             df = pd.read_csv(results_filename)
             try:
@@ -189,7 +188,8 @@ def run_pca_and_permutation_test():
             except FileNotFoundError:
 
                 for permutation in range(PERMUTATIONS):
-                    print(permutation)
+                    print('Running permutations: ' +
+                          str(permutation) + '/' + str(PERMUTATIONS))
                     shuffled_image_labels = df['Image']
                     shuffled_image_labels = shuffled_image_labels.sample(
                         frac=1)
@@ -232,7 +232,6 @@ def run_pca_and_permutation_test():
                         [pearsonr(df['Permuted Orientation'],
                                   df['2nd PC Layer ' + str(l)])[1]],
 
-
                     }
                     try:
                         permutation_df = permutation_df.append(
@@ -265,12 +264,6 @@ def run_pca_and_permutation_test():
                                             + stimuli_postfix + '_layer_'
                                                   + str(l) + '.png')
 
-            # (FIGURES_DIR
-            #                                + stimuli_postfix[1:]
-            #                                + '/permuted_correlations'
-            #                                + stimuli_postfix + '_layer_'
-            #                                + str(l) + '.pdf')
-
             permutation_df = pd.read_csv(
                 permutations_filename, index_col=0)
 
@@ -284,22 +277,15 @@ def run_pca_and_permutation_test():
             for column in correlation_df.columns:
                 if 'P-value' in column:
                     p_values_columns.append(column)
-            print(permutation_df[p_values_permuted_columns].mean())
             fig, ax = plt.subplots(4, 1)
             for i, (col_perm, col) in enumerate(zip(p_values_permuted_columns,
                                                     p_values_columns)):
-                print(i)
                 ax[i] = sns.distplot(permutation_df[col_perm], ax=ax[i])
-                print(correlation_df[col].iloc[l], l)
                 ax[i].plot([correlation_df[col].iloc[l], correlation_df[col].iloc[l]], [
                            0, 1], color='blue')
-            #
-            # permutations_figures = (figs_dir
-            #                          + 'permuted_correlations' + stimuli_postfix
-            #                          + '_layer_' + str(l) + '.png')
-            fig.savefig(permutations_p_val_figure_filename)
 
-            fig, ax = plt.subplots()
+            fig.savefig(permutations_p_val_figure_filename)
+            plt.close(fig)
 
             p_values_permuted_columns = []
             for column in permutation_df.columns:
@@ -309,66 +295,16 @@ def run_pca_and_permutation_test():
             for column in correlation_df.columns:
                 if 'P-value' not in column and 'Correlation' in column:
                     p_values_columns.append(column)
-            print(permutation_df[p_values_permuted_columns].mean())
             fig, ax = plt.subplots(4, 1)
             for i, (col_perm, col) in enumerate(zip(p_values_permuted_columns,
                                                     p_values_columns)):
-                print(i)
                 ax[i] = sns.distplot(permutation_df[col_perm], ax=ax[i])
-                print(correlation_df[col].iloc[l], l)
                 ax[i].plot([correlation_df[col].iloc[l], correlation_df[col].iloc[l]], [
                            0, 1], color='blue')
-            #
-            # permutations_figures = (figs_dir
-            #                          + 'permuted_correlations' + stimuli_postfix
-            #                          + '_layer_' + str(l) + '.png')
-            fig.savefig(permutations_corr_figure_filename)
 
-        # print(permutation_df[['']])
-        # # Now we want to calculate the permuted p-values for the two values we
-        # # picked for Frequency and Orientation.
-        # for column in ['Frequency', 'Orientation']:
-        #     # print(column)
-        #     new_column = 'P-value for ' + \
-        #         column + ' Less Than ' + str(ALPHA)
-        #     permuted_p_value_less_than_alpha = []
-        #     permuted_column = 'Permuted ' + column
-        #     for l, layer_name in enumerate(LAYER_NAMES):
-        #         try:
-        #             del permutation_df
-        #         except NameError:
-        #             None
-        #         permutations_filename = (RESULTS_DIR + '/permutations_pca/' +
-        #                                  'permuted_correlations' +
-        #                                  stimuli_postfix + '_layer_' + str(l) +
-        #                                  '.csv')
-        #         permutations_figure_filename = (FIGURES_DIR
-        #                                         + stimuli_postfix[1:]
-        #                                         + '/permuted_correlations'
-        #                                         + stimuli_postfix + '_layer_'
-        #                                         + str(l) + '.pdf')
-        #         permutation_df = pd.read_csv(permutations_filename)
-        #
-        #         permutation_df = permutation_df.sort_values(
-        #             by=[permuted_column])
-        #         permutation_df = permutation_df.reset_index()
-        #         del permutation_df['index']
-        #         high_alpha_cut_off = int(
-        #             len(permutation_df[permuted_column]) - ALPHA
-        #             * len(permutation_df[permuted_column]))
-        #
-        #         correlation = float(
-        #             correlation_df[correlation_df['Layer'] == l][column])
-        #         high_permutation_correlation_cut_off = permutation_df[permuted_column]\
-        #             .iloc[high_alpha_cut_off]
-        #
-        #         permuted_p_value_less_than_alpha.append(
-        #             high_permutation_correlation_cut_off < correlation)
-        #     correlation_df[new_column] = permuted_p_value_less_than_alpha
-        #
-        # correlation_df['Layer'] = correlation_df.index
-        #
-        # correlation_df.to_csv(correlations_results_filename, index=False)
+            fig.savefig(permutations_corr_figure_filename)
+            plt.close(fig)
+            plt.close('all')
 
 
 if __name__ == '__main__':
